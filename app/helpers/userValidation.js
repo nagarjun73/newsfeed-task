@@ -33,7 +33,7 @@ const loginEmailSchema = {
     errorMessage: "Email is Invalid"
   },
   custom: {
-    options: async (value, { req, res }) => {
+    options: async (value) => {
       //check if email alredy present in database
       const foundEmail = await User.findOne({ email: value })
 

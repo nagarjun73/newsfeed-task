@@ -6,6 +6,7 @@ const port = process.env.PORT
 
 //Route imports
 const userRoutes = require('./routes/userRoutes')
+const feedRoutes = require('./routes/feedRoutes')
 
 const app = express()
 
@@ -19,7 +20,8 @@ app.use(cors())
 configMongoDB()
 
 //user routes
-app.use("/user", userRoutes)
+app.use("/users", userRoutes)
+app.use("/feeds", feedRoutes)
 
 
 app.listen(port, () => {

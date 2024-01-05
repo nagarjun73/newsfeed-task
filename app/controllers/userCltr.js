@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator')
 const _ = require('lodash')
 const bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const User = require('../model/userModel')
 
 const userCltr = {}
@@ -14,28 +15,47 @@ userCltr.register = async (req, res) => {
   //sanitizing input data using loadash
   const body = _.pick(req.body, ["name", "email", "password"])
   try {
-    //check if email alredy present in database
-    const foundEmail = await User.findOne({ email: body.email })
+    const user = new User()
+    user.name = body.name
+    user.email = body.email
 
-    if (foundEmail) {//if email found
-      res.status(400).json({ errors: [{ msg: "Email already present." }] })
-    } else {
-      // if email doesnot found register account
-      const user = new User()
-      user.name = body.name
-      user.email = body.email
+    //generate salf
+    const salt = await bcryptjs.genSalt()
 
-      //generate salf
-      const salt = await bcryptjs.genSalt()
+    //using salt generate hashPassword
+    const hashPassword = await bcryptjs.hash(body.password, salt)
 
-      //using salt generate hashPassword
-      const hashPassword = await bcryptjs.hash(body.password, salt)
+    //addidng hash password to User object
+    user.password = hashPassword
 
-      //addidng hash password to User object
-      user.password = hashPassword
+    const savedUser = await user.save()
+    res.json({ msg: `Registered Successfully. ${savedUser.name}` });
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
 
-      const savedUser = await user.save()
-      res.json({ msg: `Registered Successfully. ${savedUser.name}` });
+userCltr.login = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  //sanitizing input data using loadash
+  const body = _.pick(req.body, ["email", "password"])
+  try {
+    //find user for password checking
+    const foundUser = await User.findOne({ email: body.email })
+    if (foundUser) {
+      //comparing both password
+      const passwordVerified = await bcryptjs.compare(body.password, foundUser.password)
+      if (!passwordVerified) {
+        res.status(404).json({ errors: [{ msg: "Invalid password." }] })
+      } else {
+        //if password correct generating token
+        const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
+        //sending to frontend for Authentication
+        res.json({ token: token })
+      }
     }
   } catch (e) {
     res.status(400).json(e)

@@ -15,6 +15,33 @@ const emailSchema = {
   isEmail: {
     errorMessage: "Email is Invalid"
   },
+  custom: {
+    options: async (value, { req, res }) => {
+      //check if email alredy present in database
+      const foundEmail = await User.findOne({ email: value })
+
+      if (foundEmail) {//if email found
+        throw new Error("Email already present.")
+      }
+    }
+  }
+}
+
+
+const loginEmailSchema = {
+  isEmail: {
+    errorMessage: "Email is Invalid"
+  },
+  custom: {
+    options: async (value) => {
+      //check if email alredy present in database
+      const foundEmail = await User.findOne({ email: value })
+
+      if (!foundEmail) {//if email not found
+        throw new Error("Account not found. Try with valid Email")
+      }
+    }
+  }
 }
 
 const passwordSchema = {
@@ -24,10 +51,6 @@ const passwordSchema = {
   }
 }
 
-const loginEmailSchema = {}
-
-const loginPasswordSchema = {}
-
 const userRegValidationSchema = {
   name: nameSchema,
   email: emailSchema,
@@ -36,7 +59,7 @@ const userRegValidationSchema = {
 
 const userLoginValidationSchema = {
   email: loginEmailSchema,
-  password: loginPasswordSchema
+  password: passwordSchema
 }
 
 module.exports = { userRegValidationSchema, userLoginValidationSchema }

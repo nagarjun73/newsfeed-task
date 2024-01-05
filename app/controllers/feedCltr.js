@@ -8,7 +8,8 @@ const feedCltr = {}
 
 feedCltr.getFeeds = async (req, res) => {
   const category = req.params.id
-  console.log(category);
+  const user = req.user
+  console.log(user);
   try {
     const feedresult = await axios.get(getUrl(category))
     const resultInXml = feedresult.data
@@ -21,8 +22,6 @@ feedCltr.getFeeds = async (req, res) => {
 
       //picking only array of feeds from result
       const parsedFeed = result.rss.channel[0].item
-
-
 
       //check if feeds document exists in database
       const docCount = await Feed.countDocuments({ category: category })

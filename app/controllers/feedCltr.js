@@ -1,28 +1,17 @@
 const axios = require('axios')
 const { parseString } = require('xml2js')
 const Feed = require('../model/feedModel')
-
+const getUrl = require('../helpers/getUrl')
 const feedCltr = {}
 
 feedCltr.getFeeds = async (req, res) => {
   const category = req.params.id
   console.log(category);
   try {
-    const feedsApi = {
-      recentStories: "rssfeedmostrecent",
-      topStories: "rssfeedstopstories",
-      india: "rssfeeds/-2128936835",
-      world: "rssfeeds/296589292",
-      nri: "rssfeeds/7098551",
-      business: "rssfeeds/1898055",
-      us: "rssfeeds_us/72258322",
-      cricket: "rssfeeds/54829575",
-      sports: "rssfeeds/4719148"
-    }
-
-    const feedresult = await axios.get(`https://timesofindia.indiatimes.com/${feedsApi[category]}.cms`)
+    const feedresult = await axios.get(getUrl(category))
     const resultInXml = feedresult.data
 
+    //parseString callback function
     const handleParsed = async (error, result) => {
       if (error) {
         return res.status(400).json(error)

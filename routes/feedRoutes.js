@@ -5,8 +5,6 @@ const router = express.Router()
 
 
 
-router.get('/recentfeeds', feedCltr.recentfeeds)
-
-
+router.get(`/:id`, feedCltr.getFeeds)
 
 module.exports = router

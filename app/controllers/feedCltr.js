@@ -7,8 +7,9 @@ const saveFeedsToDb = require('../helpers/saveFeedsToDb')
 const feedCltr = {}
 
 feedCltr.getFeeds = async (req, res) => {
-  const category = req.params.id
-  const user = req.user
+  // const category = req.params.id
+  const category = req.query.category
+  const limit = req.query.limit
   try {
     const feedresult = await axios.get(getUrl(category))
     const resultInXml = feedresult.data
@@ -44,7 +45,7 @@ feedCltr.getFeeds = async (req, res) => {
         saveFeedsToDb(feedsGrtrThnLatest, category)
 
         //find all feeds by category 
-        const allFeeds = await Feed.find({ category: category }).sort({ pubDate: -1 })
+        const allFeeds = await Feed.find({ category: category }).sort({ pubDate: -1 }).limit(limit)
         res.json(allFeeds)
       }
 

@@ -9,7 +9,6 @@ const feedCltr = {}
 feedCltr.getFeeds = async (req, res) => {
   const category = req.params.id
   const user = req.user
-  console.log(user);
   try {
     const feedresult = await axios.get(getUrl(category))
     const resultInXml = feedresult.data

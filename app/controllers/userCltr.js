@@ -62,4 +62,15 @@ userCltr.login = async (req, res) => {
   }
 }
 
+userCltr.account = async (req, res) => {
+  try {
+    const id = req.user.id
+    //find user by ID
+    const findUser = await User.findOne({ _id: id })
+    res.json({ name: findUser.name, email: findUser.email })
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
 module.exports = userCltr

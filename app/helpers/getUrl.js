@@ -9,8 +9,6 @@ const getUrl = (category) => {
     world: "rssfeeds/296589292",
     nri: "rssfeeds/7098551",
     business: "rssfeeds/1898055",
-    us: "rssfeeds_us/72258322",
-    cricket: "rssfeeds/54829575",
     sports: "rssfeeds/4719148"
   }
 

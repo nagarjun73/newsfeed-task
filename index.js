@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require("cors")
 const configMongoDB = require('./app/config/mongodb')
-const port = process.env.PORT || 3073
+const port = process.env.PORT
 
 //Route imports
 const userRoutes = require('./routes/userRoutes')

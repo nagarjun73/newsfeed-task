@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const url = process.env.DB_URL || "mongodb://127.0.0.1:27017"
-const name = process.env.DB_NAME || "newsfeed"
+const url = process.env.DB_URL
+const name = process.env.DB_NAME
 
 //database connection
 const configMongoDB = async () => {

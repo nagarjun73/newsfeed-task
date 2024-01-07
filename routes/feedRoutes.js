@@ -5,6 +5,6 @@ const authentication = require('../app/middlewares/authentication')
 
 const router = express.Router()
 
-router.get(`/`, authentication, feedCltr.getFeeds)
+router.get(`/:id`, authentication, feedCltr.getFeeds)
 
 module.exports = router

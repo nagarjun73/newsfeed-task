@@ -3,7 +3,7 @@ const Feed = require('../model/feedModel')
 //function saves array of feeds into database
 const saveFeedsToDb = (feedsArr, category) => {
   feedsArr.forEach(async (feed) => {
-
+    //cleans any html tags in description
     function removeHtmlTag(text) {
       return text.replace(/(<([^>]+)>)/gi, '');
     };

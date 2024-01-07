@@ -2,7 +2,9 @@ const { validationResult } = require('express-validator')
 const _ = require('lodash')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
 const User = require('../model/userModel')
+const secret = process.env.JWT_SECRET || "Secret@123"
 
 const userCltr = {}
 
@@ -52,7 +54,7 @@ userCltr.login = async (req, res) => {
         res.status(404).json({ errors: [{ msg: "Invalid password." }] })
       } else {
         //if password correct generating token
-        const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
+        const token = jwt.sign({ id: foundUser._id }, secret, { expiresIn: '7d' })
         //sending to frontend for Authentication
         res.json({ token: token })
       }

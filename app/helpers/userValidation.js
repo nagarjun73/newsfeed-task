@@ -1,5 +1,6 @@
 const User = require('../model/userModel')
 
+//Schemas for Defferent Fields
 const nameSchema = {
   notEmpty: {
     errorMessage: "Name should not be Empty",
@@ -47,16 +48,19 @@ const loginEmailSchema = {
 const passwordSchema = {
   isStrongPassword: {
     options: { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 },
-    errorMessage: "Password must include at least one uppercase, one lowercase, one number, and one symbol."
+    errorMessage: "Password must include at least one uppercase, lowercase, number, and symbol."
   }
 }
 
+
+//Register
 const userRegValidationSchema = {
   name: nameSchema,
   email: emailSchema,
   password: passwordSchema
 }
 
+//Login
 const userLoginValidationSchema = {
   email: loginEmailSchema,
   password: passwordSchema

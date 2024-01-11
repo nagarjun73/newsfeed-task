@@ -1,19 +1,13 @@
 
 const nameSchema = {
-  name: {
-    notEmpty: {
-      errorMessage: "Name should not be Empty",
-      bail: true
-    },
+  notEmpty: {
+    errorMessage: "Name should not be Empty",
   }
 }
 
 const urlSchema = {
-  url: {
-    notEmpty: {
-      errorMessage: "Url should not be Empty",
-      bail: true
-    }
+  notEmpty: {
+    errorMessage: "Url should not be Empty",
   }
 }
 
@@ -23,4 +17,4 @@ const categoryValidationSchema = {
   url: urlSchema,
 }
 
-module.exports = categoryValidationSchema
+module.exports = { categoryValidationSchema }

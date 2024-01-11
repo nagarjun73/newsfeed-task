@@ -4,7 +4,7 @@ const feedSchema = new Schema({
   title: String,
   description: String,
   link: String,
-  category: String,
+  category: { type: Schema.Types.ObjectId, ref: "Category", default: null },
   pubDate: Schema.Types.Date
 }, { timestamps: true })
 

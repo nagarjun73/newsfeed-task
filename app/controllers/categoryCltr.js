@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const Category = require('../model/categoryModel')
+const { validationResult } = require('express-validator')
 
 const categoryCltr = {}
 
@@ -13,6 +14,10 @@ categoryCltr.getAll = async (req, res) => {
 }
 
 categoryCltr.add = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
   const body = _.pick(req.body, ['name', 'url'])
   try {
     const ctgry = new Category()
@@ -26,6 +31,10 @@ categoryCltr.add = async (req, res) => {
 }
 
 categoryCltr.edit = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
   const id = req.params.id
   const body = _.pick(req.body, ['name', 'url'])
   try {
